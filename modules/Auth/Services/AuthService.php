@@ -10,6 +10,7 @@ class AuthService
 {
     public function register(RegisterDTO $dto): array
     {
+        /** @var User $user */
         $user = User::create([
             'name' => $dto->name,
             'email' => $dto->email,
@@ -26,14 +27,18 @@ class AuthService
 
     public function login(array $data): ?array
     {
+        /** @var User|null $user */
         $user = User::where('email', $data['email'])->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             return null;
         }
 
+        $token = $user->createToken('api')->plainTextToken;
+
         return [
             'user' => $user,
+            'token' => $token,
         ];
     }
 

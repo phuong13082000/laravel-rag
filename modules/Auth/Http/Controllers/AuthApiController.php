@@ -20,7 +20,6 @@ class AuthApiController extends Controller
             email: $request->input('email'),
             password: $request->input('password'),
         );
-
         $user = $this->authService->register($dto);
 
         return response()->json([
@@ -44,14 +43,15 @@ class AuthApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $user['user'],
+            'data' => $user,
             'message' => 'Login successful',
         ]);
     }
 
     public function logout(Request $request)
     {
-        $this->authService->logout($request->user());
+        $user = $request->user();
+        $this->authService->logout($user);
 
         return response()->json([
             'success' => true,
@@ -61,9 +61,11 @@ class AuthApiController extends Controller
 
     public function me(Request $request)
     {
+        $user = $request->user();
+
         return response()->json([
             'success' => true,
-            'data' => $request->user(),
+            'data' => $user,
             'message' => 'User retrieved successfully',
         ]);
     }
