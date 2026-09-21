@@ -7,18 +7,17 @@ use Modules\KnowledgeBase\Dtos\CreateKnowledgeBaseDTO;
 use Modules\KnowledgeBase\Services\KnowledgeBaseService;
 use Modules\KnowledgeBase\Http\Requests\StoreKnowledgeBaseRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class KnowledgeBaseController extends Controller
 {
     public function __construct(
-        private readonly KnowledgeBaseService $service,
+        private readonly KnowledgeBaseService $knowledgeBaseService,
     ) {}
 
     public function store(
         StoreKnowledgeBaseRequest $request
     ): JsonResponse {
-        $knowledgeBase = $this->service->create(
+        $knowledgeBase = $this->knowledgeBaseService->create(
             new CreateKnowledgeBaseDTO(
                 userId: $request->user()->id,
                 name: $request->string('name')->toString(),

@@ -5,4 +5,5 @@ use App\Providers\AppServiceProvider;
 return [
     AppServiceProvider::class,
     Modules\KnowledgeBase\Providers\KnowledgeBaseServiceProvider::class,
+    Modules\Auth\Providers\AuthServiceProvider::class,
 ];
