@@ -3,7 +3,7 @@
 namespace Modules\AI\Services;
 
 use Modules\AI\Repositories\CitationRepository;
-use Modules\AI\Resources\CitationResource;
+use Modules\AI\Http\Resources\CitationResource;
 
 class CitationService
 {
