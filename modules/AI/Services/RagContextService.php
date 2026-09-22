@@ -2,8 +2,9 @@
 
 namespace Modules\AI\Services;
 
-use Modules\AI\Models\Conversation;
-use Modules\AI\Repositories\MessageRepository;
+use Modules\Conversation\Models\Conversation;
+use Modules\Conversation\Services\ConversationContextService;
+use Modules\AI\Services\RagPromptBuilder;
 use Modules\Search\DTOs\SearchDTO;
 use Modules\Search\Services\SearchService;
 

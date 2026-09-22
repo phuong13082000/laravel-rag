@@ -4,7 +4,7 @@ namespace Modules\AI\Services;
 
 use Modules\AI\Contracts\LLMService;
 use Modules\Search\DTOs\SearchDTO;
-use Modules\AI\Models\Conversation;
+use Modules\Conversation\Models\Conversation;
 
 class RagService
 {

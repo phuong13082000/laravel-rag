@@ -9,6 +9,7 @@ use Modules\AI\Contracts\StreamingLLMService;
 use Modules\AI\Services\OllamaLLMService;
 use Modules\AI\Services\OllamaStreamingLLMService;
 use Modules\AI\Services\RagPromptBuilder;
+use Modules\AI\Services\RagContextService;
 use Modules\AI\Services\RagService;
 
 class AIServiceProvider extends ServiceProvider
@@ -19,7 +20,13 @@ class AIServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->singleton(RagService::class);
+        $this->app->singleton(RagService::class, function ($app) {
+            return new RagService(
+                contextService: $app->make(RagContextService::class),
+                llmService: $app->make(LLMService::class),
+            );
+        });
+        
         $this->app->singleton(RagPromptBuilder::class);
         $this->app->singleton(
             LLMService::class,

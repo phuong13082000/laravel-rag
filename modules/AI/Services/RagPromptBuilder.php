@@ -79,9 +79,7 @@ PROMPT;
         return implode("\n\n---\n\n", $parts);
     }
 
-    private function buildHistory(
-        Collection $history,
-    ): string {
+    private function buildHistory(Collection $history): string {
         if ($history->isEmpty()) {
             return '[No conversation history]';
         }

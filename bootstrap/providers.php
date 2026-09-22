@@ -11,4 +11,7 @@ return [
     Modules\Embedding\Providers\EmbeddingServiceProvider::class,
     Modules\Search\Providers\SearchServiceProvider::class,
     Modules\AI\Providers\AIServiceProvider::class,
+    Modules\Citation\Providers\CitationServiceProvider::class,
+    Modules\Conversation\Providers\ConversationServiceProvider::class,
+    Modules\Message\Providers\MessageServiceProvider::class,
 ];
