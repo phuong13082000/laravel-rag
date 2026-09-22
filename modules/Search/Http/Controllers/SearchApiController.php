@@ -13,10 +13,8 @@ class SearchApiController
         private readonly SearchService $service,
     ) {}
 
-    public function search(
-        SearchRequest $request,
-        int $knowledgeBaseId,
-    ): JsonResponse {
+    public function search(SearchRequest $request, int $knowledgeBaseId): JsonResponse
+    {
         $data = $request->validated();
 
         $dto = new SearchDTO(
@@ -28,7 +26,8 @@ class SearchApiController
             ),
         );
 
-        $results = $this->service->search($dto);
+        $user = $request->user();
+        $results = $this->service->search($dto, $user->id);
 
         return response()->json([
             'success' => true,
