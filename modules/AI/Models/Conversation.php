@@ -14,6 +14,7 @@ use Modules\User\Models\User;
     'user_id',
     'knowledge_base_id',
     'title',
+    'summary',
 ])]
 class Conversation extends Model
 {

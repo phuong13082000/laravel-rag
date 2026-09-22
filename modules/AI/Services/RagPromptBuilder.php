@@ -10,22 +10,19 @@ class RagPromptBuilder
         string $question,
         Collection $chunks,
         Collection $history,
+        ?string $summary = null,
     ): string {
         $context = $this->buildContext($chunks);
         $historyText = $this->buildHistory($history);
+        $summaryText = $this->buildSummary($summary);
 
         return <<<PROMPT
-Dựa ONLY trên CONTEXT bên dưới để trả lời câu hỏi.
+Chỉ sử dụng thông tin trong CONTEXT để trả lời.
 
-Bạn có thể sử dụng CONVERSATION HISTORY để hiểu
-ngữ cảnh của câu hỏi hiện tại.
+CONVERSATION SUMMARY:
+{$summaryText}
 
-Nếu CONTEXT không chứa đủ thông tin để trả lời, hãy nói rõ:
-"Không tìm thấy thông tin phù hợp trong tài liệu."
-
-Không được tự bịa thông tin.
-
-CONVERSATION HISTORY:
+RECENT CONVERSATION:
 {$historyText}
 
 CONTEXT:
@@ -34,8 +31,25 @@ CONTEXT:
 QUESTION:
 {$question}
 
+Nếu CONTEXT không đủ thông tin để trả lời,
+hãy nói rõ:
+
+"Không tìm thấy thông tin phù hợp trong tài liệu."
+
+Không được tự bịa thông tin.
+
 ANSWER:
 PROMPT;
+    }
+
+    private function buildSummary(
+        ?string $summary,
+    ): string {
+        if (!$summary) {
+            return '[No conversation summary]';
+        }
+
+        return $summary;
     }
 
     private function buildContext(Collection $chunks): string

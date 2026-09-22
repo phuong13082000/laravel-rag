@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\AI\Contracts\StreamingLLMService;
 use Modules\AI\DTOs\ChatDTO;
 use Modules\AI\Enums\MessageRole;
+use Modules\AI\Jobs\SummarizeConversationJob;
 use Modules\AI\Models\Conversation;
 use Modules\AI\Repositories\CitationRepository;
 use Modules\AI\Repositories\MessageRepository;
@@ -134,6 +135,10 @@ PROMPT;
             'citations.document',
             'citations.chunk',
         ]);
+
+        SummarizeConversationJob::dispatch(
+            $context['conversation']->id,
+        );
 
         return [
             'conversation' => $context['conversation'],

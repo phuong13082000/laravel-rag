@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\AI\DTOs\ChatDTO;
 use Modules\AI\Enums\MessageRole;
+use Modules\AI\Jobs\SummarizeConversationJob;
 use Modules\AI\Models\Conversation;
 use Modules\AI\Repositories\CitationRepository;
 use Modules\AI\Repositories\ConversationRepository;
@@ -95,6 +96,10 @@ class ChatService
             'citations.document',
             'citations.chunk',
         ]);
+
+        SummarizeConversationJob::dispatch(
+            $conversation->id,
+        );
 
         return [
             'conversation' => $conversation,

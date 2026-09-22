@@ -11,7 +11,7 @@ class RagContextService
 {
     public function __construct(
         private readonly SearchService $searchService,
-        private readonly MessageRepository $messageRepository,
+        private readonly ConversationContextService $conversationContextService,
         private readonly RagPromptBuilder $promptBuilder,
     ) {}
 
@@ -25,21 +25,22 @@ class RagContextService
             userId: $userId,
         );
 
-        $history = $this->messageRepository->getRecent(
-            conversation: $conversation,
-            limit: 10,
-        );
+        $conversationContext = $this
+            ->conversationContextService
+            ->build($conversation);
 
         $prompt = $this->promptBuilder->build(
             question: $searchDTO->query,
             chunks: $chunks,
-            history: $history,
+            history: $conversationContext['messages'],
+            summary: $conversationContext['summary'],
         );
 
         return [
             'prompt' => $prompt,
             'chunks' => $chunks,
-            'history' => $history,
+            'history' => $conversationContext['messages'],
+            'summary' => $conversationContext['summary'],
         ];
     }
 }
