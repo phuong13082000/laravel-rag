@@ -7,8 +7,8 @@ use Modules\Document\Models\Document;
 use Modules\Document\Repositories\DocumentRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 use Modules\Document\Services\DocumentTextExtractorService;
+use Modules\Chunk\Services\ChunkingService;
 use Throwable;
 
 class ProcessDocumentJob implements ShouldQueue
@@ -25,7 +25,8 @@ class ProcessDocumentJob implements ShouldQueue
 
     public function handle(
         DocumentTextExtractorService $extractor,
-        DocumentRepository $repository,
+        DocumentRepository $documentRepository,
+        ChunkingService $chunkingService,
     ): void {
         $document = Document::find($this->documentId);
 
@@ -33,7 +34,7 @@ class ProcessDocumentJob implements ShouldQueue
             return;
         }
 
-        $repository->updateStatus(
+        $documentRepository->updateStatus(
             $document,
             DocumentStatus::PROCESSING,
         );
@@ -47,28 +48,14 @@ class ProcessDocumentJob implements ShouldQueue
                 );
             }
 
-            /*
-             * Tạm thời chỉ kiểm tra extraction.
-             *
-             * Bước tiếp theo:
-             *
-             * text
-             * ↓
-             * ChunkService
-             * ↓
-             * document_chunks
-             */
-            Log::info('Document text extracted.', [
-                'document_id' => $document->id,
-                'characters' => mb_strlen($text),
-            ]);
-
-            $repository->updateStatus(
+            $chunkingService->chunk($document, $text);
+            
+            $documentRepository->updateStatus(
                 $document,
                 DocumentStatus::COMPLETED,
             );
         } catch (Throwable $e) {
-            $repository->updateStatus(
+            $documentRepository->updateStatus(
                 $document,
                 DocumentStatus::FAILED,
                 $e->getMessage(),

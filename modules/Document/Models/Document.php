@@ -5,7 +5,9 @@ namespace Modules\Document\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\KnowledgeBase\Models\KnowledgeBase;
+use Modules\Chunk\Models\DocumentChunk;
 
 #[Fillable([
     'knowledge_base_id',
@@ -27,5 +29,10 @@ class Document extends Model
     public function knowledgeBase(): BelongsTo
     {
         return $this->belongsTo(KnowledgeBase::class);
+    }
+
+    public function chunks(): HasMany
+    {
+        return $this->hasMany(DocumentChunk::class);
     }
 }
