@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\KnowledgeBase\Http\Controllers\KnowledgeBaseController;
+use Modules\KnowledgeBase\Http\Controllers\KnowledgeBaseApiController;
 
 Route::prefix('v1/knowledge-bases')->group(function () {
-    Route::post('', [KnowledgeBaseController::class, 'store']);
-    Route::get('', [KnowledgeBaseController::class, 'index']);
-    Route::get('{id}', [KnowledgeBaseController::class, 'show']);
-    Route::put('{id}', [KnowledgeBaseController::class, 'update']);
-    Route::delete('{id}', [KnowledgeBaseController::class, 'destroy']);
+    Route::post('', [KnowledgeBaseApiController::class, 'store']);
+    Route::get('', [KnowledgeBaseApiController::class, 'index']);
+    Route::get('{id}', [KnowledgeBaseApiController::class, 'show']);
+    Route::put('{id}', [KnowledgeBaseApiController::class, 'update']);
+    Route::delete('{id}', [KnowledgeBaseApiController::class, 'destroy']);
 });
