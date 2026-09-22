@@ -72,4 +72,20 @@ class ConversationService
 
         $this->repository->delete($conversation);
     }
+
+    public function create(
+        int $userId,
+        int $knowledgeBaseId,
+        string $title,
+    ): Conversation {
+        return $this->repository->create([
+            'user_id' => $userId,
+            'knowledge_base_id' => $knowledgeBaseId,
+            'title' => \Illuminate\Support\Str::limit(
+                $title,
+                255,
+                '',
+            ),
+        ]);
+    }
 }

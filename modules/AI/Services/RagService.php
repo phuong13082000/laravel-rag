@@ -3,11 +3,8 @@
 namespace Modules\AI\Services;
 
 use Modules\AI\Contracts\LLMService;
-use Modules\AI\Repositories\MessageRepository;
 use Modules\Search\DTOs\SearchDTO;
-use Modules\Search\Services\SearchService;
 use Modules\AI\Models\Conversation;
-
 
 class RagService
 {
@@ -26,10 +23,8 @@ Quy tắc:
 PROMPT;
 
     public function __construct(
-        private readonly SearchService $searchService,
+        private readonly RagContextService $contextService,
         private readonly LLMService $llmService,
-        private readonly RagPromptBuilder $promptBuilder,
-        private readonly MessageRepository $messageRepository,
     ) {}
 
     public function answer(
@@ -37,30 +32,20 @@ PROMPT;
         int $userId,
         Conversation $conversation,
     ): array {
-        $chunks = $this->searchService->search(
-            dto: $searchDTO,
+        $context = $this->contextService->build(
+            searchDTO: $searchDTO,
             userId: $userId,
-        );
-
-        $history = $this->messageRepository->getRecent(
             conversation: $conversation,
-            limit: 10,
-        );
-
-        $prompt = $this->promptBuilder->build(
-            question: $searchDTO->query,
-            chunks: $chunks,
-            history: $history,
         );
 
         $answer = $this->llmService->generate(
-            prompt: $prompt,
+            prompt: $context['prompt'],
             systemPrompt: self::SYSTEM_PROMPT,
         );
 
         return [
             'answer' => $answer,
-            'chunks' => $chunks,
+            'chunks' => $context['chunks'],
         ];
     }
 }
