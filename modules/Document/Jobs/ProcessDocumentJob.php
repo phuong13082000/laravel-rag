@@ -8,7 +8,7 @@ use Modules\Document\Repositories\DocumentRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Modules\Document\Services\DocumentTextExtractorService;
-use Modules\Chunk\Services\ChunkingService;
+use Modules\Chunk\Services\ChunkService;
 use Throwable;
 
 class ProcessDocumentJob implements ShouldQueue
@@ -26,7 +26,7 @@ class ProcessDocumentJob implements ShouldQueue
     public function handle(
         DocumentTextExtractorService $extractor,
         DocumentRepository $documentRepository,
-        ChunkingService $chunkingService,
+        ChunkService $chunkService,
     ): void {
         $document = Document::find($this->documentId);
 
@@ -48,7 +48,7 @@ class ProcessDocumentJob implements ShouldQueue
                 );
             }
 
-            $chunkingService->chunk($document, $text);
+            $chunkService->chunk($document, $text);
             
             $documentRepository->updateStatus(
                 $document,

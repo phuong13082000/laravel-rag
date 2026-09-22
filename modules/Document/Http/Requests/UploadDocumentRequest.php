@@ -14,17 +14,8 @@ class UploadDocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => [
-                'required',
-                'file',
-                'max:20480',
-                'mimes:txt,md,pdf',
-            ],
-            'title' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
+            'title' => ['nullable', 'string', 'max:255'],
+            'file' => ['required', 'file', 'max:20480', 'mimes:txt,md,pdf'],
         ];
     }
 }

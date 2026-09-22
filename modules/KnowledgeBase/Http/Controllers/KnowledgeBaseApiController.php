@@ -19,8 +19,8 @@ class KnowledgeBaseApiController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $userId = $request->user()->id;
-        $data = $this->knowledgeBaseService->list($userId);
+        $user = $request->user();
+        $data = $this->knowledgeBaseService->list($user->id);
 
         return response()->json([
             'success' => true,
@@ -31,9 +31,9 @@ class KnowledgeBaseApiController extends Controller
 
     public function store(StoreKnowledgeBaseRequest $request): JsonResponse
     {
-        $userId = $request->user()->id;
+        $user = $request->user();
         $dto = new CreateKnowledgeBaseDTO(
-            userId: $userId,
+            userId: $user->id,
             name: $request->string('name')->toString(),
             description: $request->input('description'),
         );
@@ -48,8 +48,8 @@ class KnowledgeBaseApiController extends Controller
 
     public function show(Request $request, int $id): JsonResponse
     {
-        $userId = $request->user()->id;
-        $knowledgeBase = $this->knowledgeBaseService->find($id, $userId);
+        $user = $request->user();
+        $knowledgeBase = $this->knowledgeBaseService->find($id, $user->id);
 
         return response()->json([
             'success' => true,
@@ -60,12 +60,12 @@ class KnowledgeBaseApiController extends Controller
 
     public function update(UpdateKnowledgeBaseRequest $request, int $id): JsonResponse
     {
-        $userId = $request->user()->id;
+        $user = $request->user();
         $dto = new UpdateKnowledgeBaseDTO(
             name: $request->string('name')->toString(),
             description: $request->input('description'),
         );
-        $knowledgeBase = $this->knowledgeBaseService->update($id, $userId, $dto);
+        $knowledgeBase = $this->knowledgeBaseService->update($id, $user->id, $dto);
 
         return response()->json([
             'success' => true,
@@ -76,8 +76,8 @@ class KnowledgeBaseApiController extends Controller
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $userId = $request->user()->id;
-        $this->knowledgeBaseService->delete($id, $userId);
+        $user = $request->user();
+        $this->knowledgeBaseService->delete($id, $user->id);
 
         return response()->json([
             'success' => true,

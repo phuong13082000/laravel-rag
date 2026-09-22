@@ -3,7 +3,7 @@
 namespace Modules\Chunk\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\Chunk\Services\ChunkingService;
+use Modules\Chunk\Services\ChunkService;
 use Modules\Chunk\Repositories\DocumentChunkRepository;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +17,8 @@ class ChunkServiceProvider extends ServiceProvider
     {
         $this->app->singleton(DocumentChunkRepository::class);
 
-        $this->app->singleton(ChunkingService::class, function ($app) {
-            return new ChunkingService(
+        $this->app->singleton(ChunkService::class, function ($app) {
+            return new ChunkService(
                 repository: $app->make(DocumentChunkRepository::class)
             );
         });

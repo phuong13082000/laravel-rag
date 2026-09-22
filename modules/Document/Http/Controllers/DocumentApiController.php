@@ -25,10 +25,8 @@ class DocumentApiController extends Controller
         ]);
     }
 
-    public function store(
-        UploadDocumentRequest $request,
-        int $knowledgeBaseId,
-    ): JsonResponse {
+    public function store(UploadDocumentRequest $request, int $knowledgeBaseId): JsonResponse
+    {
         $document = $this->service->upload(
             knowledgeBaseId: $knowledgeBaseId,
             userId: $request->user()->id,
@@ -116,7 +114,7 @@ class DocumentApiController extends Controller
             $request->user()->id,
         );
 
-        return response()->json([                                                       
+        return response()->json([
             'success' => true,
             'data' => $result,
             'message' => 'Document processing restarted.',

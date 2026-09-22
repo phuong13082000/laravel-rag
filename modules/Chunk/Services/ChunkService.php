@@ -6,7 +6,7 @@ use Modules\Chunk\Dtos\CreateChunkDTO;
 use Modules\Chunk\Repositories\DocumentChunkRepository;
 use Modules\Document\Models\Document;
 
-class ChunkingService
+class ChunkService
 {
     private const int CHUNK_SIZE = 1000;
 

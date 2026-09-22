@@ -15,7 +15,9 @@ class DocumentChunkRepository
     {
         if ($chunks === []) return;
 
-        DocumentChunk::query()->insert($chunks);
+        foreach ($chunks as $chunk) {
+            DocumentChunk::create($chunk);
+        }
     }
 
     public function deleteByDocument(int $documentId): int
