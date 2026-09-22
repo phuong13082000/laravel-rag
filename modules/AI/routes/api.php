@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\AI\Http\Controllers\ChatApiController;
 use Modules\AI\Http\Controllers\ChatStreamApiController;
 use Modules\AI\Http\Controllers\ConversationApiController;
+use Modules\AI\Http\Controllers\CitationApiController;
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post(
@@ -34,5 +35,15 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::delete(
         'conversations/{conversation}',
         [ConversationApiController::class, 'destroy'],
+    );
+
+    Route::get(
+        'messages/{message}/citations',
+        [CitationApiController::class, 'index'],
+    );
+
+    Route::get(
+        'citations/{citation}',
+        [CitationApiController::class, 'show'],
     );
 });

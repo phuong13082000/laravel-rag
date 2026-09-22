@@ -22,23 +22,16 @@ class Citation extends Model
 
     public function message(): BelongsTo
     {
-        return $this->belongsTo(
-            Message::class,
-        );
+        return $this->belongsTo(Message::class);
     }
 
     public function document(): BelongsTo
     {
-        return $this->belongsTo(
-            Document::class,
-        );
+        return $this->belongsTo(Document::class);
     }
 
     public function chunk(): BelongsTo
     {
-        return $this->belongsTo(
-            DocumentChunk::class,
-            'document_chunk_id',
-        );
+        return $this->belongsTo(DocumentChunk::class, 'document_chunk_id');
     }
 }
