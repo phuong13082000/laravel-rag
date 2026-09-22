@@ -19,21 +19,18 @@ class ChatRequest extends FormRequest
                 'integer',
                 'exists:conversations,id',
             ],
-
             'message' => [
                 'required',
                 'string',
                 'min:1',
                 'max:5000',
             ],
-
             'limit' => [
                 'nullable',
                 'integer',
                 'min:1',
                 'max:10',
             ],
-
             'min_similarity' => [
                 'nullable',
                 'numeric',

@@ -12,9 +12,8 @@ class ConversationApiController
         private readonly ConversationService $service,
     ) {}
 
-    public function index(
-        Request $request,
-    ): JsonResponse {
+    public function index(Request $request): JsonResponse
+    {
         $perPage = min(
             (int) $request->input('per_page', 20),
             100,
@@ -32,10 +31,8 @@ class ConversationApiController
         ]);
     }
 
-    public function show(
-        Request $request,
-        int $conversation,
-    ): JsonResponse {
+    public function show(Request $request, int $conversation): JsonResponse
+    {
         $item = $this->service->find(
             conversationId: $conversation,
             userId: $request->user()->id,
@@ -52,10 +49,8 @@ class ConversationApiController
         ]);
     }
 
-    public function messages(
-        Request $request,
-        int $conversation,
-    ): JsonResponse {
+    public function messages(Request $request, int $conversation): JsonResponse
+    {
         $perPage = min(
             (int) $request->input('per_page', 50),
             100,
@@ -74,10 +69,8 @@ class ConversationApiController
         ]);
     }
 
-    public function destroy(
-        Request $request,
-        int $conversation,
-    ): JsonResponse {
+    public function destroy(Request $request, int $conversation): JsonResponse
+    {
         $this->service->delete(
             conversationId: $conversation,
             userId: $request->user()->id,

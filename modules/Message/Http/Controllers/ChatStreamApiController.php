@@ -12,10 +12,8 @@ class ChatStreamApiController
         private readonly StreamingChatService $chatService,
     ) {}
 
-    public function stream(
-        Request $request,
-        int $knowledgeBase,
-    ) {
+    public function stream(Request $request, int $knowledgeBase)
+    {
         $data = $request->validate([
             'conversation_id' => [
                 'nullable',

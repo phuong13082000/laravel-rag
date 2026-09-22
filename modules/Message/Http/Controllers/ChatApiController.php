@@ -13,10 +13,8 @@ class ChatApiController
         private readonly ChatService $chatService,
     ) {}
 
-    public function chat(
-        ChatRequest $request,
-        int $knowledgeBase,
-    ): JsonResponse {
+    public function chat(ChatRequest $request, int $knowledgeBase): JsonResponse
+    {
         $data = $request->validated();
 
         $dto = new ChatDTO(

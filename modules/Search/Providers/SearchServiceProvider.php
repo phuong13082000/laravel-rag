@@ -5,6 +5,7 @@ namespace Modules\Search\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Modules\Embedding\Contracts\EmbeddingService;
+use Modules\KnowledgeBase\Services\KnowledgeBaseService;
 use Modules\Search\Repositories\VectorSearchRepository;
 use Modules\Search\Services\SearchService;
 
@@ -21,7 +22,8 @@ class SearchServiceProvider extends ServiceProvider
         $this->app->singleton(SearchService::class, function ($app) {
             return new SearchService(
                 embeddingService: $app->make(EmbeddingService::class),
-                repository: $app->make(VectorSearchRepository::class)
+                vectorSearchRepository: $app->make(VectorSearchRepository::class),
+                knowledgeBaseService: $app->make(KnowledgeBaseService::class),
             );
         });
     }
