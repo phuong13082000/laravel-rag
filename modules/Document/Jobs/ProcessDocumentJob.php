@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Modules\Document\Services\DocumentTextExtractorService;
 use Modules\Chunk\Services\ChunkService;
+use Modules\Embedding\Jobs\EmbedDocumentChunksJob;
 use Throwable;
 
 class ProcessDocumentJob implements ShouldQueue
@@ -48,11 +49,18 @@ class ProcessDocumentJob implements ShouldQueue
                 );
             }
 
-            $chunkService->chunk($document, $text);
-            
+            $chunkService->chunk(
+                $document,
+                $text,
+            );
+
             $documentRepository->updateStatus(
                 $document,
-                DocumentStatus::COMPLETED,
+                DocumentStatus::EMBEDDING,
+            );
+
+            EmbedDocumentChunksJob::dispatch(
+                $document->id,
             );
         } catch (Throwable $e) {
             $documentRepository->updateStatus(
