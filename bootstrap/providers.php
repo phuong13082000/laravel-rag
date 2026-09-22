@@ -9,4 +9,5 @@ return [
     Modules\Document\Providers\DocumentServiceProvider::class,
     Modules\Chunk\Providers\ChunkServiceProvider::class,
     Modules\Embedding\Providers\EmbeddingServiceProvider::class,
+    Modules\Search\Providers\SearchServiceProvider::class,
 ];
