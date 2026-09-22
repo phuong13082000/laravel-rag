@@ -1,19 +1,26 @@
-                         Laravel RAG
-                             │
-              ┌──────────────┴──────────────┐
-              │                             │
-          Documents                     Search
-              │                             │
-          Queue Job                     Query
-              │                             │
-          PDF Extract                   BGE-M3
-              │                             │
-           Chunking                         │
-              │                             │
-       document_chunks ◄────────────── vector search
-              │
-          BGE-M3
-              │
-        vector(1024)
-              │
-         PostgreSQL + pgvector
+                    USER
+                      │
+                      ▼
+               POST /chat
+                      │
+                      ▼
+                RagService
+                 /       \
+                /         \
+               ▼           ▼
+           Search       Prompt Builder
+              │              │
+           BGE-M3            │
+              │              │
+         pgvector            │
+              │              │
+          Top-K chunks ──────┘
+                 │
+                 ▼
+              Prompt
+                 │
+                 ▼
+              Qwen3:4b
+                 │
+                 ▼
+               Answer

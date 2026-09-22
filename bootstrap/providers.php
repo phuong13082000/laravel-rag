@@ -10,4 +10,5 @@ return [
     Modules\Chunk\Providers\ChunkServiceProvider::class,
     Modules\Embedding\Providers\EmbeddingServiceProvider::class,
     Modules\Search\Providers\SearchServiceProvider::class,
+    Modules\AI\Providers\AIServiceProvider::class,
 ];
