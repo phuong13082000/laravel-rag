@@ -7,15 +7,14 @@ use Modules\Message\Repositories\MessageRepository;
 
 class ConversationContextService
 {
-    private const RECENT_MESSAGE_LIMIT = 10;
+    private const int RECENT_MESSAGE_LIMIT = 10;
 
     public function __construct(
         private readonly MessageRepository $messageRepository,
     ) {}
 
-    public function build(
-        Conversation $conversation,
-    ): array {
+    public function build(Conversation $conversation): array
+    {
         $history = $this->messageRepository->getRecent(
             conversation: $conversation,
             limit: self::RECENT_MESSAGE_LIMIT,

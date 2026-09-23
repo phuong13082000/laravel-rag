@@ -28,14 +28,8 @@ class AIServiceProvider extends ServiceProvider
         });
         
         $this->app->singleton(RagPromptBuilder::class);
-        $this->app->singleton(
-            LLMService::class,
-            OllamaLLMService::class,
-        );
-        $this->app->singleton(
-            StreamingLLMService::class,
-            OllamaStreamingLLMService::class,
-        );
+        $this->app->singleton(LLMService::class, OllamaLLMService::class);
+        $this->app->singleton(StreamingLLMService::class, OllamaStreamingLLMService::class);
     }
 
     public function boot()

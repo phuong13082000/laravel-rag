@@ -8,10 +8,8 @@ use Modules\Message\Models\Message;
 
 class CitationRepository
 {
-    public function createMany(
-        Message $message,
-        iterable $chunks,
-    ): void {
+    public function createMany(Message $message, iterable $chunks): void
+    {
         foreach ($chunks as $chunk) {
             Citation::create([
                 'message_id' => $message->id,
@@ -22,10 +20,8 @@ class CitationRepository
         }
     }
 
-    public function getByMessageForUser(
-        int $messageId,
-        int $userId,
-    ): Collection {
+    public function getByMessageForUser(int $messageId, int $userId): Collection
+    {
         return Citation::query()
             ->where('message_id', $messageId)
             ->whereHas(
@@ -42,10 +38,8 @@ class CitationRepository
             ->get();
     }
 
-    public function findByIdForUser(
-        int $citationId,
-        int $userId,
-    ): ?Citation {
+    public function findByIdForUser(int $citationId, int $userId): ?Citation
+    {
         return Citation::query()
             ->whereKey($citationId)
             ->whereHas(

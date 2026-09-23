@@ -10,15 +10,13 @@ class ChunkService
 {
     private const int CHUNK_SIZE = 1000;
 
-    private const int CHUNK_OVERLAP = 150;
-
     public function __construct(
-        private readonly DocumentChunkRepository $repository,
+        private readonly DocumentChunkRepository $documentChunkRepository,
     ) {}
 
     public function chunk(Document $document, string $text): void
     {
-        $this->repository->deleteByDocument($document->id);
+        $this->documentChunkRepository->deleteByDocument($document->id);
 
         $chunks = $this->split($text);
 
@@ -31,11 +29,13 @@ class ChunkService
                 continue;
             }
 
+            $estimateTokenCount = max(1, (int) ceil(mb_strlen($content) / 4));
+
             $dto = new CreateChunkDTO(
                 documentId: $document->id,
                 content: $content,
                 chunkIndex: $index,
-                tokenCount: $this->estimateTokenCount($content),
+                tokenCount: $estimateTokenCount,
                 metadata: [
                     'character_count' => mb_strlen($content),
                 ],
@@ -44,7 +44,7 @@ class ChunkService
             $data[] = $dto->toArray();
         }
 
-        $this->repository->createMany($data);
+        $this->documentChunkRepository->createMany($data);
     }
 
     /**
@@ -95,10 +95,5 @@ class ChunkService
         }
 
         return $chunks;
-    }
-
-    private function estimateTokenCount(string $content): int
-    {
-        return max(1, (int) ceil(mb_strlen($content) / 4));
     }
 }

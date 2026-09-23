@@ -14,7 +14,7 @@ class OllamaStreamingLLMService implements StreamingLLMService
         callable $onToken,
     ): void {
         $payload = [
-            'model' => config('services.ollama.llm_model'),
+            'model' => config('ai.ollama.model_llm'),
             'prompt' => $prompt,
             'stream' => true,
         ];
@@ -24,24 +24,17 @@ class OllamaStreamingLLMService implements StreamingLLMService
         }
 
         $response = Http::baseUrl(
-            config('services.ollama.base_url'),
+            config('ai.ollama.base_url'),
         )
-            ->timeout(600)
-            ->withOptions([
-                'stream' => true,
-            ])
+            ->timeout(config('ai.ollama.timeout', 600))
+            ->withOptions(['stream' => true])
             ->post('/api/generate', $payload);
 
         if ($response->failed()) {
-            throw new LLMException(
-                'Ollama streaming request failed: '
-                . $response->body(),
-            );
+            throw new LLMException('Ollama streaming request failed: ' . $response->body());
         }
 
-        $body = $response
-            ->toPsrResponse()
-            ->getBody();
+        $body = $response->toPsrResponse()->getBody();
 
         $buffer = '';
 
@@ -49,16 +42,9 @@ class OllamaStreamingLLMService implements StreamingLLMService
             $buffer .= $body->read(8192);
 
             while (($position = strpos($buffer, "\n")) !== false) {
-                $line = substr(
-                    $buffer,
-                    0,
-                    $position,
-                );
+                $line = substr($buffer, 0, $position);
 
-                $buffer = substr(
-                    $buffer,
-                    $position + 1,
-                );
+                $buffer = substr($buffer, $position + 1);
 
                 $line = trim($line);
 
@@ -76,9 +62,7 @@ class OllamaStreamingLLMService implements StreamingLLMService
                 }
 
                 if (isset($data['error'])) {
-                    throw new LLMException(
-                        $data['error'],
-                    );
+                    throw new LLMException($data['error']);
                 }
 
                 $token = $data['response'] ?? '';

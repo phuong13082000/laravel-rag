@@ -14,7 +14,7 @@ class RagPromptBuilder
     ): string {
         $context = $this->buildContext($chunks);
         $historyText = $this->buildHistory($history);
-        $summaryText = $this->buildSummary($summary);
+        $summaryText = $summary ?: '[No conversation summary]';
 
         return <<<PROMPT
 Chỉ sử dụng thông tin trong CONTEXT để trả lời.
@@ -40,16 +40,6 @@ Không được tự bịa thông tin.
 
 ANSWER:
 PROMPT;
-    }
-
-    private function buildSummary(
-        ?string $summary,
-    ): string {
-        if (!$summary) {
-            return '[No conversation summary]';
-        }
-
-        return $summary;
     }
 
     private function buildContext(Collection $chunks): string

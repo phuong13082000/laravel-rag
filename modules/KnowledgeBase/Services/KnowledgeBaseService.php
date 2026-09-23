@@ -27,8 +27,7 @@ class KnowledgeBaseService
 
     public function find(int $id, int $userId): KnowledgeBase
     {
-        $knowledgeBase = $this->knowledgeBaseRepository
-            ->findByIdForUser($id, $userId);
+        $knowledgeBase = $this->knowledgeBaseRepository->findByIdForUser($id, $userId);
 
         if (!$knowledgeBase) {
             throw new ModelNotFoundException();

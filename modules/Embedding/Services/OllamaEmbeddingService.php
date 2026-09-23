@@ -16,9 +16,7 @@ class OllamaEmbeddingService implements EmbeddingService
         $embeddings = $this->request([$text]);
 
         if (!isset($embeddings[0])) {
-            throw new EmbeddingException(
-                'Ollama did not return an embedding.',
-            );
+            throw new EmbeddingException('Ollama did not return an embedding.');
         }
 
         return $embeddings[0];
@@ -36,44 +34,30 @@ class OllamaEmbeddingService implements EmbeddingService
     private function request(array $texts): array
     {
         try {
-            $response = Http::baseUrl(
-                config('services.ollama.base_url'),
-            )
+            $response = Http::baseUrl(config('ai.ollama.base_url'))
                 ->timeout(300)
                 ->acceptJson()
                 ->post('/api/embed', [
-                    'model' => config(
-                        'services.ollama.embedding_model',
-                    ),
+                    'model' => config('ai.ollama.model_embedding'),
                     'input' => array_values($texts),
                 ]);
         } catch (ConnectionException $e) {
-            throw new EmbeddingException(
-                'Unable to connect to Ollama.',
-                previous: $e,
-            );
+            throw new EmbeddingException('Unable to connect to Ollama.', previous: $e);
         }
 
         if ($response->failed()) {
-            throw new EmbeddingException(
-                'Ollama embedding request failed: '
-                    . $response->body(),
-            );
+            throw new EmbeddingException('Ollama embedding request failed: ' . $response->body());
         }
 
         $embeddings = $response->json('embeddings');
 
         if (!is_array($embeddings)) {
-            throw new EmbeddingException(
-                'Invalid embedding response from Ollama.',
-            );
+            throw new EmbeddingException('Invalid embedding response from Ollama.');
         }
 
         foreach ($embeddings as $embedding) {
             if (!is_array($embedding)) {
-                throw new EmbeddingException(
-                    'Invalid embedding vector.',
-                );
+                throw new EmbeddingException('Invalid embedding vector.');
             }
 
             if (count($embedding) !== self::DIMENSIONS) {
@@ -82,7 +66,7 @@ class OllamaEmbeddingService implements EmbeddingService
                         'Invalid embedding dimension. Expected %d, got %d.',
                         self::DIMENSIONS,
                         count($embedding),
-                    ),
+                    )
                 );
             }
         }

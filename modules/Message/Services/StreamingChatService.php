@@ -148,24 +148,16 @@ PROMPT;
         ];
     }
 
-    private function resolveConversation(
-        ChatDTO $dto,
-        int $userId,
-    ): Conversation {
+    private function resolveConversation(ChatDTO $dto, int $userId): Conversation
+    {
         if ($dto->conversationId !== null) {
             $conversation = $this->conversationService->find(
                 conversationId: $dto->conversationId,
                 userId: $userId,
             );
 
-            if (
-                $conversation->knowledge_base_id
-                !== $dto->knowledgeBaseId
-            ) {
-                abort(
-                    422,
-                    'Conversation does not belong to this knowledge base.',
-                );
+            if ($conversation->knowledge_base_id !== $dto->knowledgeBaseId) {
+                abort(422, 'Conversation does not belong to this knowledge base.');
             }
 
             return $conversation;

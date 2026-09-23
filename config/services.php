@@ -34,21 +34,4 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
-    'ollama' => [
-        'base_url' => env(
-            'OLLAMA_BASE_URL',
-            'http://127.0.0.1:11434',
-        ),
-
-        'embedding_model' => env(
-            'OLLAMA_EMBEDDING_MODEL',
-            'bge-m3',
-        ),
-
-        'llm_model' => env(
-            'OLLAMA_LLM_MODEL',
-            'qwen3:4b',
-        ),
-    ],
 ];

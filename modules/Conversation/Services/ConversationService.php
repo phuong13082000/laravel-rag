@@ -2,6 +2,7 @@
 
 namespace Modules\Conversation\Services;
 
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Modules\Conversation\Models\Conversation;
 use Modules\Conversation\Repositories\ConversationRepository;
@@ -35,10 +36,7 @@ class ConversationService
             );
 
         if (!$conversation) {
-            abort(
-                404,
-                'Conversation not found.',
-            );
+            abort(404, 'Conversation not found.');
         }
 
         return $conversation;
@@ -81,11 +79,7 @@ class ConversationService
         return $this->repository->create([
             'user_id' => $userId,
             'knowledge_base_id' => $knowledgeBaseId,
-            'title' => \Illuminate\Support\Str::limit(
-                $title,
-                255,
-                '',
-            ),
+            'title' => Str::limit($title, 255, ''),
         ]);
     }
 }

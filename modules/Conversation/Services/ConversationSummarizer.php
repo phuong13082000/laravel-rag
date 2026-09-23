@@ -36,9 +36,7 @@ class ConversationSummarizer
             ->map(function ($message) {
                 return sprintf(
                     '%s: %s',
-                    strtoupper(
-                        $message->role->value,
-                    ),
+                    strtoupper($message->role->value),
                     $message->content,
                 );
             })

@@ -12,7 +12,7 @@ class OllamaLLMService implements LLMService
     public function generate(string $prompt, ?string $systemPrompt = null): string
     {
         $payload = [
-            'model' => config('services.ollama.llm_model'),
+            'model' => config('ai.ollama.model_llm'),
             'prompt' => $prompt,
             'stream' => false,
         ];
@@ -22,8 +22,8 @@ class OllamaLLMService implements LLMService
         }
 
         try {
-            $response = Http::baseUrl(config('services.ollama.base_url'))
-                ->timeout(600)
+            $response = Http::baseUrl(config('ai.ollama.base_url'))
+                ->timeout(config('ai.ollama.timeout', 600))
                 ->acceptJson()
                 ->post('/api/generate', $payload);
         } catch (ConnectionException $e) {

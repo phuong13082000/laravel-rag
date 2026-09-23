@@ -11,10 +11,8 @@ class CitationService
         private readonly CitationRepository $citationRepository,
     ) {}
 
-    public function getByMessage(
-        int $messageId,
-        int $userId,
-    ): array {
+    public function getByMessage(int $messageId, int $userId): array
+    {
         $citations = $this->citationRepository->getByMessageForUser(
             messageId: $messageId,
             userId: $userId,
@@ -23,10 +21,8 @@ class CitationService
         return CitationResource::collection(citations: $citations);
     }
 
-    public function find(
-        int $citationId,
-        int $userId,
-    ): array {
+    public function find(int $citationId, int $userId): array
+    {
         $citation = $this->citationRepository->findByIdForUser(
             citationId: $citationId,
             userId: $userId,
